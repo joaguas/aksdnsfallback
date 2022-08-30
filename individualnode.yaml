@@ -8,8 +8,7 @@ spec:
   containers:
   - image: mcr.microsoft.com/oss/nginx/nginx:1.13.12-alpine
     imagePullPolicy: Never
-    name: debugger
-    resources: {}
+    name: dnsfix
     volumeMounts:
     - mountPath: /host
       name: host-root

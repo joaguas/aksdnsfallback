@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dnsdebugger
+  namespace: default
+spec:
+  nodeName: ##REPLACE WITH NODE NAME (kubectl get nodes)
+  containers:
+  - image: mcr.microsoft.com/oss/nginx/nginx:1.13.12-alpine
+    imagePullPolicy: Never
+    name: debugger
+    resources: {}
+    volumeMounts:
+    - mountPath: /host
+      name: host-root
+    command: ["/bin/sh", "-c"]
+    args:
+      - chroot /host /bin/bash -c "sed -i '/FallbackDNS/d' /etc/systemd/resolved.conf; echo "FallbackDNS=168.63.129.16" >> /etc/systemd/resolved.conf; systemctl restart systemd-resolved.service"
+  hostIPC: true
+  hostNetwork: true
+  hostPID: true
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Never
+  volumes:
+  - hostPath:
+      path: /
+      type: ""
+    name: host-root

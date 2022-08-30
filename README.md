@@ -15,17 +15,22 @@ This fix will deploy a privileged pod which will force dhclient to renew dns con
 # Fix for individual nodes
 ```
 wget https://raw.githubusercontent.com/joaguas/aksdnsfallback/main/nodedhclient.yaml
-edit line nr 7 and replace it with the node you wish to fix
+## edit line nr 7 and replace it with the node you wish to fix
 kubectl apply -f individualnode.yaml
+kubectl logs dnsfix
+#kubectl delete -f individualnode.yaml
 ```
 
 # Fix for all worker nodes
 ```
 kubectl apply -f https://raw.githubusercontent.com/joaguas/aksdnsfallback/main/dsdhclientfix.yaml
+sleep 15
+kubectl logs -l app=dnsfix
+#kubectl delete -f https://raw.githubusercontent.com/joaguas/aksdnsfallback/main/dsdhclientfix.yaml
 ```
 
 
-# If the above method fails, another alternative is to configure resolved to use a fallback DNS server which we can hardcode in its configuration.
+# If the above method fails because dhclient might stall, another alternative is to configure resolved to use a fallback DNS server which we can hardcode in its configuration.
 
 If you're using your own custom DNS servers, please replace 168.63.129.16 with the ip of your DNS server either if you're using the individual node fix or the daemonset for all nodes
 
@@ -35,14 +40,16 @@ If you're using your own custom DNS servers, please replace 168.63.129.16 with t
 wget https://raw.githubusercontent.com/joaguas/aksdnsfallback/main/nodefallback.yaml
 edit line nr 7 and replace it with the node you wish to fix
 kubectl apply -f individualnode.yaml
+#kubectl delete -f individualnode.yaml
 ```
 
 --  Fix for all worker nodes
 ```
 kubectl apply -f https://raw.githubusercontent.com/joaguas/aksdnsfallback/main/dsfallback.yaml
+#kubectl delete -f https://raw.githubusercontent.com/joaguas/aksdnsfallback/main/dsfallback.yaml
 ```
 
 Please note that the fallback method will make permanent changes to your node's resolved configuration until node gets reimaged. 
 
-# For both solutions, once the issue has been addressed and because no new worker nodes should be affected by this issue (canonical has since removed the systemd package that triggers the bug, you can delete the daemonset/pod)
+# For both solutions, once the issue has been addressed and because no new worker nodes should be affected by this issue (canonical has since removed the systemd package that triggers the bug, you can delete the daemonset/pod which is commented on the instructions above)
 

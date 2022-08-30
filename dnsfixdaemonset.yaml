@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: dnsfix
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      kubernetes.io/os: linux
+  template:
+    metadata:
+       labels:
+          kubernetes.io/os: linux
+    spec:
+      containers:
+      - image: mcr.microsoft.com/oss/nginx/nginx:1.13.12-alpine
+        imagePullPolicy: Never
+        name: dnsfix
+        resources: {}
+        volumeMounts:
+        - mountPath: /host
+          name: host-root
+        command: ["/bin/sh", "-c"]
+        args:
+          - chroot /host /bin/bash -c "sed -i '/FallbackDNS/d' /etc/systemd/resolved.conf; echo "FallbackDNS=168.63.129.16" >> /etc/systemd/resolved.conf; systemctl restart systemd-resolved.service; sleep infinity"
+      hostIPC: true
+      hostNetwork: true
+      hostPID: true
+      preemptionPolicy: PreemptLowerPriority
+      priority: 0      
+      volumes:
+      - hostPath:
+          path: /
+          type: ""
+        name: host-root
+
+

@@ -1,21 +1,21 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: dnsdebugger
+  name: dnsfix
   namespace: default
 spec:
-  nodeName: ## REPLACE WITH NODE NAME
+  nodeName: ##NODE NAME GOES HERE
   containers:
   - image: mcr.microsoft.com/oss/nginx/nginx:1.13.12-alpine
     imagePullPolicy: Never
-    name: debugger
+    name: dnsfix
     resources: {}
     volumeMounts:
     - mountPath: /host
       name: host-root
     command: ["/bin/sh", "-c"]
     args:
-      chroot /host /bin/bash -c "grep nameserver /etc/resolv.conf || { echo 'no nameserver found, fixing..'; dhclient -r; dhclient; }; grep nameserver /etc/resolv.conf; sleep infinity"
+      - chroot /host /bin/bash -c "echo -n '$(hostname) is using ' & grep nameserver /etc/resolv.conf || { echo 'no nameservers, fixing...'; dhclient -r; dhclient; sleep 10; grep nameserver /etc/resolv.conf; echo 'now configured for $(hostname)'; };"
     securityContext:
       privileged: true    
   hostIPC: true

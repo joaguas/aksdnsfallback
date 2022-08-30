@@ -22,7 +22,7 @@ spec:
           name: host-root
         command: ["/bin/sh", "-c"]
         args:
-          - chroot /host /bin/bash -c "grep nameserver /etc/resolv.conf || { echo 'no nameserver found, fixing..'; dhclient -r; dhclient; grep nameserver /etc/resolv.conf; }; sleep infinity"
+          - chroot /host /bin/bash -c "grep nameserver /etc/resolv.conf || { echo 'no nameserver found, fixing..'; dhclient -r; dhclient; sleep 10; grep nameserver /etc/resolv.conf; }; sleep infinity"
         securityContext:
           privileged: true
       hostIPC: true

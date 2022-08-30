@@ -21,7 +21,7 @@ kubectl apply -f individualnode.yaml
 
 # Fix for all worker nodes
 ```
-kubectl apply -f https://raw.githubusercontent.com/joaguas/aksdnsfallback/main/dsdhclient.yaml
+kubectl apply -f https://raw.githubusercontent.com/joaguas/aksdnsfallback/main/dsdhclientfix.yaml
 ```
 
 

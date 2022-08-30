@@ -40,9 +40,9 @@ kubectl apply -f individualnode.yaml
 --  Fix for all worker nodes
 ```
 kubectl apply -f https://raw.githubusercontent.com/joaguas/aksdnsfallback/main/dsfallback.yaml
-
+```
 
 Please note that the fallback method will make permanent changes to your node's resolved configuration until node gets reimaged. 
 
-For both solutions, once the issue has been addressed and because no new worker nodes should be affected by this issue (canonical has since removed the systemd package that triggers the bug, you can delete the daemonset/pod)
-```
+# For both solutions, once the issue has been addressed and because no new worker nodes should be affected by this issue (canonical has since removed the systemd package that triggers the bug, you can delete the daemonset/pod)
+

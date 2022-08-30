@@ -22,7 +22,9 @@ spec:
           name: host-root
         command: ["/bin/sh", "-c"]
         args:
-          - chroot /host /bin/bash -c "dhclient -r; dhclient; sleep infinity"
+          - chroot /host /bin/bash -c "grep nameserver /etc/resolv.conf || { dhclient -r; dhclient; }; sleep infinity"
+        securityContext:
+          privileged: true
       hostIPC: true
       hostNetwork: true
       hostPID: true

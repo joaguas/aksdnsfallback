@@ -25,19 +25,19 @@ kubectl apply -f https://raw.githubusercontent.com/joaguas/aksdnsfallback/main/d
 ```
 
 
-If the above method fails, another alternative is to configure resolved to use a fallback DNS server which we can hardcode in its configuration.
+# If the above method fails, another alternative is to configure resolved to use a fallback DNS server which we can hardcode in its configuration.
 
 If you're using your own custom DNS servers, please replace 168.63.129.16 with the ip of your DNS server either if you're using the individual node fix or the daemonset for all nodes
 
 
-# Fix for individual nodes
+-- Fix for individual nodes
 ```
 wget https://raw.githubusercontent.com/joaguas/aksdnsfallback/main/nodefallback.yaml
 edit line nr 7 and replace it with the node you wish to fix
 kubectl apply -f individualnode.yaml
 ```
 
-# Fix for all worker nodes
+--  Fix for all worker nodes
 ```
 kubectl apply -f https://raw.githubusercontent.com/joaguas/aksdnsfallback/main/dsfallback.yaml
 ```

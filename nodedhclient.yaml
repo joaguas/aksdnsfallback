@@ -4,7 +4,7 @@ metadata:
   name: dnsdebugger
   namespace: default
 spec:
-  nodeName: aks-nodepool1-30873681-vmss000000
+  nodeName: ## REPLACE WITH NODE NAME
   containers:
   - image: mcr.microsoft.com/oss/nginx/nginx:1.13.12-alpine
     imagePullPolicy: Never
